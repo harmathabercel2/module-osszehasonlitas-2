@@ -8,6 +8,15 @@
 /*****                                                  *****/
 /************************************************************/
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}ProductComparison') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}ProductComparison
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}ProductComparisonItem') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}ProductComparisonItem
+GO
+
+
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Osszehasonlitas_Items]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}Osszehasonlitas_Items]
 GO
@@ -35,6 +44,24 @@ ALTER TABLE {databaseOwner}{objectQualifier}Osszehasonlitas_Items ADD CONSTRAINT
     ) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
 GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}ProductComparison (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT FOREIGN KEY REFERENCES {databaseOwner}{objectQualifier}Users(UserID),
+    CreatedUtc DATETIME
+);
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}ProductComparisonItem (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    ComparisonId INT FOREIGN KEY REFERENCES {databaseOwner}{objectQualifier}ProductComparison(Id),
+    ProductBvin UNIQUEIDENTIFIER,
+    AddedUtc DATETIME,
+    SortOrder INT
+);
+GO
+
 
 
 /************************************************************/
