@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Dnn.BakeBeam.Osszehasonlitas.Controllers
+namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 {
     [DnnHandleError]
     public class ItemController : DnnController
@@ -80,8 +80,9 @@ namespace Dnn.BakeBeam.Osszehasonlitas.Controllers
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddItem")]
         public ActionResult Index()
         {
-            var items = ItemManager.Instance.GetItems(ModuleContext.ModuleId);
-            return View(items);
+            var termekek = "helloszia";
+            ViewBag.Termekek = termekek;
+            return View();
         }
     }
 }

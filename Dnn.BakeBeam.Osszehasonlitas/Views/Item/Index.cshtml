@@ -1,13 +1,18 @@
-﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable< Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Models.Item >>
+﻿﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage
 
-@using System.Text.RegularExpressions
-@using DotNetNuke.Web.Mvc.Helpers
+@using DotNetNuke.Web.Client.ClientResourceManagement
+@using DotNetNuke.Framework.JavaScriptLibraries
+@using Dnn.BakeBeam.Osszehasonlitas.Models;
+
+@{
+    //    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/DesktopModules/MVC/RF.Modules.TestFlightAppointment/Scripts/BookingGrid.js");
+
+    var termekek = ViewBag.Termekek;
+}
 
 
-<div id="Items-@Dnn.ModuleContext.ModuleId">
+<p>
+    Üdvözlünk a modulban!
 
-        <ul class="tm_tl">
-                teszt
-        </ul>
-    
-</div>
+</p>
+<div>@(termekek)</div>
