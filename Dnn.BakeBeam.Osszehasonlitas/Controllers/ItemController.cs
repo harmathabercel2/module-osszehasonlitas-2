@@ -12,6 +12,7 @@
 
 using Dnn.BakeBeam.Osszehasonlitas.Components;
 using Dnn.BakeBeam.Osszehasonlitas.Models;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
@@ -80,9 +81,16 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddItem")]
         public ActionResult Index()
         {
+            var ctx = DataContext.Instance();
+            var osszehasonlitando = ctx.GetRepository<ProductComparison>()
+                .GetById(1);
+
+            
+
             var termekek = "helloszia";
-            ViewBag.Termekek = termekek;
+            ViewBag.Termekek = osszehasonlitando.UserId;
             return View();
         }
+
     }
 }

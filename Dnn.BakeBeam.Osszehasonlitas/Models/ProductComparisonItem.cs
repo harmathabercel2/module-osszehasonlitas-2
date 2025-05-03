@@ -18,13 +18,16 @@ using System.Web.Caching;
 
 namespace Dnn.BakeBeam.Osszehasonlitas.Models
 {
-    [TableName("ProductComparison")]
+    [TableName("ProductComparisonItem")]
     [PrimaryKey(nameof(Id), AutoIncrement = true)]
-    public class ProductComparison
+    public class ProductComparisonItem
     {
-        public int Id { get; set; }                // Egyedi azonosító
-        public int UserId { get; set; }            // Felhasználó azonosító
-        public DateTime CreatedUtc { get; set; }   // Létrehozás ideje
+        public int Id { get; set; }                    // Egyedi azonosító
+        public int ComparisonId { get; set; }          // Hivatkozás ProductComparison-ra
+        public Guid ProductBvin { get; set; }          // Termék Bvin (GUID)
+        public DateTime AddedUtc { get; set; }         // Kijelölés időpontja
+        public int SortOrder { get; set; }             // Sorrend: 1 = első, 2 = második
+
 
     }
 }
