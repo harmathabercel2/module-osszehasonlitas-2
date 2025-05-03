@@ -15,7 +15,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search;
 using System.Collections.Generic;
 
-namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Components
+namespace Dnn.BakeBeam.Osszehasonlitas.Components
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

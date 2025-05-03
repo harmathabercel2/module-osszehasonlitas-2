@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Models
+namespace Dnn.BakeBeam.Osszehasonlitas.Models
 {
     public class Settings
     {

@@ -10,12 +10,12 @@
 ' 
 */
 
-using Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Models;
+using Dnn.BakeBeam.Osszehasonlitas.Models;
 using DotNetNuke.Data;
 using DotNetNuke.Framework;
 using System.Collections.Generic;
 
-namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Components
+namespace Dnn.BakeBeam.Osszehasonlitas.Components
 {
     internal interface IItemManager
     {

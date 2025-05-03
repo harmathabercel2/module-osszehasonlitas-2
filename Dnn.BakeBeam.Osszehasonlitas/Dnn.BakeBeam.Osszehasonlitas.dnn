@@ -43,7 +43,7 @@
           <desktopModule>
             <moduleName>Dnn.BakeBeam.Osszehasonlitas</moduleName>
             <foldername>Dnn.BakeBeam.Osszehasonlitas</foldername>
-            <businessControllerClass>Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Components.FeatureController</businessControllerClass>
+            <businessControllerClass>Dnn.BakeBeam.Osszehasonlitas.Components.FeatureController</businessControllerClass>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
@@ -52,7 +52,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers/Item/Index.mvc</controlSrc>
+                    <controlSrc>Dnn.BakeBeam.Osszehasonlitas.Controllers/Item/Index.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -62,7 +62,7 @@
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit</controlKey>
-                    <controlSrc>Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers/Item/Edit.mvc</controlSrc>
+                    <controlSrc>Dnn.BakeBeam.Osszehasonlitas.Controllers/Item/Edit.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
@@ -73,7 +73,7 @@
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Settings</controlKey>
-                    <controlSrc>Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers/Settings/Settings.mvc</controlSrc>
+                    <controlSrc>Dnn.BakeBeam.Osszehasonlitas.Controllers/Settings/Settings.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Dnn.BakeBeam.Osszehasonlitas Settings</controlTitle>
                     <controlType>Edit</controlType>

@@ -10,8 +10,8 @@
 ' 
 */
 
-using Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Components;
-using Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Models;
+using Dnn.BakeBeam.Osszehasonlitas.Components;
+using Dnn.BakeBeam.Osszehasonlitas.Models;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
+namespace Dnn.BakeBeam.Osszehasonlitas.Controllers
 {
     [DnnHandleError]
     public class ItemController : DnnController
