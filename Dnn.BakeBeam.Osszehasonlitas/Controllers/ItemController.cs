@@ -23,6 +23,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Hotcakes.CommerceDTO.v1.Client;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 
 namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
@@ -90,6 +92,9 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddItem")]
         public ActionResult Index()
         {
+            string termek1sku = "nmm";
+            string termek2sku = "kmm";
+
             var termekek = "";
 
             var ctx = DataContext.Instance();
@@ -110,6 +115,8 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             var proxy = new Api(url, key);
 
             var snaps = proxy.CategoriesFindAll();
+            var termek1 = proxy.ProductsFindBySku(termek1sku);
+            var termek2 = proxy.ProductsFindBySku(termek2sku);
             if (snaps.Content != null)
             {
                 //Console.WriteLine("Found " + snaps.Content.Count + " categories");
@@ -167,9 +174,27 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
 
 
-            var termekek2 = osszehasonlitando.UserId;
+            //var termekek2 = osszehasonlitando.UserId;
             ViewBag.Termekek = termekek;
+            ViewBag.Termek1Bvin = termek1.Content.Bvin;
+            ViewBag.Termek1N = termek1.Content.ProductName.ToString();
+            ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
+            ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
+            ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
+
+            ViewBag.Termek2Bvin = termek2.Content.Bvin;
+            ViewBag.Termek2N = termek2.Content.ProductName.ToString();
+            ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
+            ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
+            ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
             return View();
+        }
+
+        public string tizedesJegyLevetel(string nyers)
+        {
+            decimal value = decimal.Parse(nyers);
+            string formatted = value.ToString("0.##");
+            return formatted;
         }
 
 

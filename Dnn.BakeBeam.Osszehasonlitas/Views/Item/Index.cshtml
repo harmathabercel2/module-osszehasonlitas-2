@@ -7,7 +7,13 @@
 @{
     //    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/DesktopModules/MVC/RF.Modules.TestFlightAppointment/Scripts/BookingGrid.js");
 
-    var termekek = ViewBag.Termekek;
+    var Termekek = ViewBag.Termekek;
+    var Termek1N = ViewBag.Termek1N;
+    var Termek1P = ViewBag.Termek1P;
+    var Termek1W = ViewBag.Termek1W;
+    var Termek1Kep = ViewBag.Termek1Kep;
+
+
 }
 
 
@@ -15,4 +21,24 @@
     Üdvözlünk a modulban!
 
 </p>
-<div>@(termekek)</div>
+<div>@(Termekek)</div>
+
+<div class="termekOsszehasonlitasRacs">
+    <div class="termekOsszehasonlitasOszlop">
+        <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek1Bvin)/small/@(Termek1Kep)" /></div>
+        <div></div>
+        <div>@(Termek1N)</div>
+        <div>@(Termek1P) Ft</div>
+        <div>@(Termek1W) kg</div>
+        <a class="kosarbaGomb">Kosárba</a>
+
+    </div>
+    <div class="termekOsszehasonlitasOszlop">
+        <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek2Bvin)/small/@(ViewBag.Termek2Kep)" /></div>
+        <div></div>
+        <div>@(ViewBag.Termek2N)</div>
+        <div>@(ViewBag.Termek2P) Ft</div>
+        <div>@(ViewBag.Termek2W) kg</div>
+        <a class="kosarbaGomb">Kosárba</a>
+    </div>
+</div>
