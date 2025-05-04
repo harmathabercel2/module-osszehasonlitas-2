@@ -16,7 +16,7 @@ using DotNetNuke.Entities.Content;
 using System;
 using System.Web.Caching;
 
-namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Models
+namespace Dnn.BakeBeam.Osszehasonlitas.Models
 {
     [TableName("Dnn.BakeBeam.Osszehasonlitas_Items")]
     //setup the primary key for table

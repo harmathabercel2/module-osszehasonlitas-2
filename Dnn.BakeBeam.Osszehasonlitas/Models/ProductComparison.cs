@@ -9,16 +9,22 @@
 ' DEALINGS IN THE SOFTWARE.
 ' 
 */
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Entities.Content;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Web.Caching;
 
 namespace Dnn.BakeBeam.Osszehasonlitas.Models
 {
-    public class Settings
+    [TableName("ProductComparison")]
+    [PrimaryKey(nameof(Id), AutoIncrement = true)]
+    public class ProductComparison
     {
-        public bool Setting1 { get; set; }
-        public DateTime Setting2 { get; set; }
+        public int Id { get; set; }                // Egyedi azonosító
+        public int UserId { get; set; }            // Felhasználó azonosító
+        public DateTime CreatedUtc { get; set; }   // Létrehozás ideje
+
     }
 }

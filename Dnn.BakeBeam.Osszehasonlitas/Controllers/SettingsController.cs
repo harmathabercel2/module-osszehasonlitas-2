@@ -16,7 +16,7 @@ using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using System.Web.Mvc;
 
-namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
+namespace Dnn.BakeBeam.Osszehasonlitas.Controllers
 {
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
     [DnnHandleError]
