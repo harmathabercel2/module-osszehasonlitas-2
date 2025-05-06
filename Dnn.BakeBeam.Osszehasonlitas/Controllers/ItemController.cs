@@ -101,8 +101,8 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             var userID = 1;
 
             var ctx = DataContext.Instance();
-            //var osszehasonlitando = ctx.GetRepository<ProductComparisonItem>().Find("where UserId = @0", userID).ToArray();
-            var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", userID).ToArray();
+            var osszehasonlitando = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", userID).First();
+            var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", osszehasonlitando.Id).ToArray();
 
             //int oesz = osszehasonlitandoElemek.Length;
             //string oesz = osszehasonlitandoElemek[0];
@@ -202,7 +202,9 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
             ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
             ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
-            ViewBag.Termek1Meret = termek1.Content.ShippingDetails.Length + " cm x " + termek1.Content.ShippingDetails.Width + " cm x " + termek1.Content.ShippingDetails.Height + " cm";
+            ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
+                            + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
+                            + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
 
             ViewBag.Termek2Bvin = termek2.Content.Bvin;
             ViewBag.Termek2Sku = termek2.Content.Sku;
@@ -210,7 +212,9 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
             ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
             ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
-            ViewBag.Termek2Meret = termek2.Content.ShippingDetails.Length + " cm x " + termek2.Content.ShippingDetails.Width + " cm x " + termek2.Content.ShippingDetails.Height + " cm";
+            ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
+                + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x " 
+                + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
             return View();
         }
 

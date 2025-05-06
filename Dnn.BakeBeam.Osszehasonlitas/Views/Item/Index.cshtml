@@ -10,7 +10,6 @@
     var Termekek = ViewBag.Termekek;
     var Termek1N = ViewBag.Termek1N;
     var Termek1P = ViewBag.Termek1P;
-    var Termek1W = ViewBag.Termek1W;
     var Termek1Kep = ViewBag.Termek1Kep;
 
 
@@ -29,7 +28,7 @@
         <div></div>
         <div>@(Termek1N)</div>
         <div>@(Termek1P) Ft</div>
-        <div>@(Termek1W) kg</div>
+        <div>@(ViewBag.Termek1Meret)</div>
         <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek1Sku)&AddSkuQty=1">Kosárba</a>
 
 
@@ -39,7 +38,7 @@
         <div></div>
         <div>@(ViewBag.Termek2N)</div>
         <div>@(ViewBag.Termek2P) Ft</div>
-        <div>@(ViewBag.Termek2W) kg</div>
+        <div>@(ViewBag.Termek2Meret) kg</div>
         <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek2Sku)&AddSkuQty=1">Kosárba</a>
     </div>
 </div>
