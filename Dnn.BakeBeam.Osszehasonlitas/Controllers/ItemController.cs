@@ -100,8 +100,10 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
             var userID = 1;
 
+            
+
             var ctx = DataContext.Instance();
-            var osszehasonlitando = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", userID).First();
+            var osszehasonlitando = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", User.UserID).First();
             var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", osszehasonlitando.Id).ToArray();
 
             //int oesz = osszehasonlitandoElemek.Length;
