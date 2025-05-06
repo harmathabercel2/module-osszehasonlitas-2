@@ -24,7 +24,7 @@ namespace Dnn.BakeBeam.Osszehasonlitas.Models
     {
         public int Id { get; set; }                    // Egyedi azonosító
         public int ComparisonId { get; set; }          // Hivatkozás ProductComparison-ra
-        public Guid ProductBvin { get; set; }          // Termék Bvin (GUID)
+        public String ProductBvin { get; set; }          // Termék Bvin (GUID)
         public DateTime AddedUtc { get; set; }         // Kijelölés időpontja
         public int SortOrder { get; set; }             // Sorrend: 1 = első, 2 = második
 

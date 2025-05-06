@@ -56,7 +56,7 @@ GO
 CREATE TABLE {databaseOwner}{objectQualifier}ProductComparisonItem (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     ComparisonId INT FOREIGN KEY REFERENCES {databaseOwner}{objectQualifier}ProductComparison(Id),
-    ProductBvin UNIQUEIDENTIFIER,
+    ProductBvin NVARCHAR(MAX),
     AddedUtc DATETIME,
     SortOrder INT
 );

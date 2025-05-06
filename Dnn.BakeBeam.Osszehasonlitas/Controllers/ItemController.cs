@@ -25,6 +25,7 @@ using System.Web.Mvc;
 using Hotcakes.CommerceDTO.v1.Client;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 
 namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
@@ -97,9 +98,28 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
             var termekek = "";
 
+            var userID = 1;
+
             var ctx = DataContext.Instance();
-            var osszehasonlitando = ctx.GetRepository<ProductComparison>()
-                .GetById(1);
+            //var osszehasonlitando = ctx.GetRepository<ProductComparisonItem>().Find("where UserId = @0", userID).ToArray();
+            var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", userID).ToArray();
+
+            //int oesz = osszehasonlitandoElemek.Length;
+            //string oesz = osszehasonlitandoElemek[0];
+            //string termek2sku = osszehasonlitandoElemek[oesz-2].ProductBvin.ToString();
+
+            Array.Sort(osszehasonlitandoElemek, delegate (ProductComparisonItem a, ProductComparisonItem b)
+            {
+                return b.AddedUtc.CompareTo(a.AddedUtc); // csökkenő sorrend
+            });
+
+            // Első két elem kiválasztása
+            var top2 = new List<ProductComparisonItem>();
+            if (osszehasonlitandoElemek.Length > 0)
+                top2.Add(osszehasonlitandoElemek[0]);
+            if (osszehasonlitandoElemek.Length > 1)
+                top2.Add(osszehasonlitandoElemek[1]);
+
 
             Console.WriteLine("This is an API Sample Program for Hotcakes");
             Console.WriteLine();
@@ -115,12 +135,12 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             var proxy = new Api(url, key);
 
             var snaps = proxy.CategoriesFindAll();
-            var termek1 = proxy.ProductsFindBySku(termek1sku);
-            var termek2 = proxy.ProductsFindBySku(termek2sku);
+            var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
+            var termek2 = proxy.ProductsFindBySku(top2[1].ProductBvin.ToString());
             if (snaps.Content != null)
             {
                 //Console.WriteLine("Found " + snaps.Content.Count + " categories");
-                termekek = "Found " + snaps.Content.Count + " categories";
+                termekek = "Found " + top2[0].AddedUtc + " categories";
                /* Console.WriteLine("-- First 5 --");
                 for (var i = 0; i < 5; i++)
                 {
@@ -176,17 +196,21 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
             //var termekek2 = osszehasonlitando.UserId;
             ViewBag.Termekek = termekek;
+            ViewBag.Termek1Sku = termek1.Content.Sku;
             ViewBag.Termek1Bvin = termek1.Content.Bvin;
             ViewBag.Termek1N = termek1.Content.ProductName.ToString();
             ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
             ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
             ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
+            ViewBag.Termek1Meret = termek1.Content.ShippingDetails.Length + " cm x " + termek1.Content.ShippingDetails.Width + " cm x " + termek1.Content.ShippingDetails.Height + " cm";
 
             ViewBag.Termek2Bvin = termek2.Content.Bvin;
+            ViewBag.Termek2Sku = termek2.Content.Sku;
             ViewBag.Termek2N = termek2.Content.ProductName.ToString();
             ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
             ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
             ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
+            ViewBag.Termek2Meret = termek2.Content.ShippingDetails.Length + " cm x " + termek2.Content.ShippingDetails.Width + " cm x " + termek2.Content.ShippingDetails.Height + " cm";
             return View();
         }
 
