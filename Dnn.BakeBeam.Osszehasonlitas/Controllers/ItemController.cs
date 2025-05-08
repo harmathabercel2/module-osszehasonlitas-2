@@ -103,18 +103,25 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             
 
             var ctx = DataContext.Instance();
-            var osszehasonlitando = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", User.UserID).First();
+            var adatbazisObjektum = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", User.UserID);
+            ProductComparison osszehasonlitando;
 
-            if(hozzaadottTermekSKU != null){
-                if (osszehasonlitando == null)
-                {
-                    ProductComparison ujFelhasznalo = new ProductComparison();
-                    ujFelhasznalo.CreatedUtc = DateTime.UtcNow;
-                    ujFelhasznalo.UserId = User.UserID;
-                    ctx.GetRepository<ProductComparison>().Insert(ujFelhasznalo);
+            if (adatbazisObjektum.ToArray().Length != 0)
+            {
+                osszehasonlitando = adatbazisObjektum.First();
+            }
+            else
+            {
+                ProductComparison ujFelhasznalo = new ProductComparison();
+                ujFelhasznalo.CreatedUtc = DateTime.UtcNow;
+                ujFelhasznalo.UserId = User.UserID;
+                ctx.GetRepository<ProductComparison>().Insert(ujFelhasznalo);
 
-                    osszehasonlitando = ujFelhasznalo;
-                }
+                osszehasonlitando = ujFelhasznalo;
+            }
+
+            if (hozzaadottTermekSKU != null){
+                
 
                 ProductComparisonItem ujElem = new ProductComparisonItem();
                 ujElem.AddedUtc = DateTime.UtcNow;
@@ -149,8 +156,6 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 top2.Add(osszehasonlitandoElemek[1]);
 
 
-            Console.WriteLine("This is an API Sample Program for Hotcakes");
-            Console.WriteLine();
 
             var url = string.Empty;
             var key = string.Empty;
