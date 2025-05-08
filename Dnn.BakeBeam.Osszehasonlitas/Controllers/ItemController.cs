@@ -91,7 +91,7 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
 
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddItem")]
-        public ActionResult Index()
+        public ActionResult Index(string hozzaadottTermekSKU)
         {
             string termek1sku = "nmm";
             string termek2sku = "kmm";
@@ -104,6 +104,32 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
             var ctx = DataContext.Instance();
             var osszehasonlitando = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", User.UserID).First();
+
+            if(hozzaadottTermekSKU != null){
+                if (osszehasonlitando == null)
+                {
+                    ProductComparison ujFelhasznalo = new ProductComparison();
+                    ujFelhasznalo.CreatedUtc = DateTime.UtcNow;
+                    ujFelhasznalo.UserId = User.UserID;
+                    ctx.GetRepository<ProductComparison>().Insert(ujFelhasznalo);
+
+                    osszehasonlitando = ujFelhasznalo;
+                }
+
+                ProductComparisonItem ujElem = new ProductComparisonItem();
+                ujElem.AddedUtc = DateTime.UtcNow;
+                ujElem.ProductBvin = hozzaadottTermekSKU;
+                ujElem.ComparisonId = osszehasonlitando.Id;
+
+                ctx.GetRepository<ProductComparisonItem>().Insert(ujElem);
+            }
+
+            
+
+            
+
+
+
             var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", osszehasonlitando.Id).ToArray();
 
             //int oesz = osszehasonlitandoElemek.Length;
@@ -217,6 +243,9 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
                 + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x " 
                 + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
+
+            ViewBag.hozzaadottTermekID = hozzaadottTermekSKU;
+
             return View();
         }
 
