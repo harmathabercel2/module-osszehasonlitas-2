@@ -143,6 +143,19 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             //string oesz = osszehasonlitandoElemek[0];
             //string termek2sku = osszehasonlitandoElemek[oesz-2].ProductBvin.ToString();
 
+            var url = string.Empty;
+            var key = string.Empty;
+
+
+
+            if (url == string.Empty) url = "http://www.dnndev.me";
+            if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
+
+            var proxy = new Api(url, key);
+
+            var snaps = proxy.CategoriesFindAll();
+
+
             Array.Sort(osszehasonlitandoElemek, delegate (ProductComparisonItem a, ProductComparisonItem b)
             {
                 return b.AddedUtc.CompareTo(a.AddedUtc); // csökkenő sorrend
@@ -156,103 +169,48 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 top2.Add(osszehasonlitandoElemek[1]);
 
 
+            ViewBag.ElemSzam = osszehasonlitandoElemek.Length;
 
-            var url = string.Empty;
-            var key = string.Empty;
-
-            
-
-            if (url == string.Empty) url = "http://www.dnndev.me";
-            if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
-
-            var proxy = new Api(url, key);
-
-            var snaps = proxy.CategoriesFindAll();
-            var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
-            var termek2 = proxy.ProductsFindBySku(top2[1].ProductBvin.ToString());
-            if (snaps.Content != null)
+            if (osszehasonlitandoElemek.Length == 0)
             {
-                //Console.WriteLine("Found " + snaps.Content.Count + " categories");
-                termekek = "Found " + top2[0].AddedUtc + " categories";
-               /* Console.WriteLine("-- First 5 --");
-                for (var i = 0; i < 5; i++)
-                {
-                    if (i < snaps.Content.Count)
-                    {
-                        Console.WriteLine(i + ") " + snaps.Content[i].Name + " [" + snaps.Content[i].Bvin + "]");
-                        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
-                        if (cat.Errors.Count > 0)
-                        {
-                            foreach (var err in cat.Errors)
-                            {
-                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("By Bvin: " + cat.Content.Name + " | " + cat.Content.Description);
-                        }
 
-                        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
-                        if (catSlug.Errors.Count > 0)
-                        {
-                            foreach (var err in catSlug.Errors)
-                            {
-                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("By Slug: " + cat.Content.Name + " | " + cat.Content.Description);
-                        }
-                    }
-                }*/
+            } else if(osszehasonlitandoElemek.Length > 0)
+            {
+                var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
+                ViewBag.Termekek = termekek;
+                ViewBag.Termek1Sku = termek1.Content.Sku;
+                ViewBag.Termek1Bvin = termek1.Content.Bvin;
+                ViewBag.Termek1N = termek1.Content.ProductName.ToString();
+                ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
+                ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
+                ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
+                ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
             }
 
-            //Console.WriteLine("Done - Press a key to continue");
-            //Console.ReadKey();
-
-
-
-            /*try
+            if(osszehasonlitandoElemek.Length > 1)
             {
-                string HotCakesApiKey = "asfaf";
-                FoglalasokManager foglalasokManager = new FoglalasokManager();
-                var result = foglalasokManager.FoglalasKeszites(SzemelyiEdzoID, Nev, Sport, Idopont, Megjegyzes, HotCakesApiKey);
+                var termek2 = proxy.ProductsFindBySku(top2[1].ProductBvin.ToString());
+
+
+
+                ViewBag.Termek2Bvin = termek2.Content.Bvin;
+                ViewBag.Termek2Sku = termek2.Content.Sku;
+                ViewBag.Termek2N = termek2.Content.ProductName.ToString();
+                ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
+                ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
+                ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
+                ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
+                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x "
+                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
+
+                ViewBag.hozzaadottTermekID = hozzaadottTermekSKU;
             }
-            catch (Exception ex)
-            {
-                return null;
-            }*/
-
-
-
-            //var termekek2 = osszehasonlitando.UserId;
-            ViewBag.Termekek = termekek;
-            ViewBag.Termek1Sku = termek1.Content.Sku;
-            ViewBag.Termek1Bvin = termek1.Content.Bvin;
-            ViewBag.Termek1N = termek1.Content.ProductName.ToString();
-            ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
-            ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
-            ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
-            ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
-                            + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
-                            + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
-
-            ViewBag.Termek2Bvin = termek2.Content.Bvin;
-            ViewBag.Termek2Sku = termek2.Content.Sku;
-            ViewBag.Termek2N = termek2.Content.ProductName.ToString();
-            ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
-            ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
-            ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
-            ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
-                + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x " 
-                + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
-
-            ViewBag.hozzaadottTermekID = hozzaadottTermekSKU;
 
             return View();
         }
+
 
         public string tizedesJegyLevetel(string nyers)
         {

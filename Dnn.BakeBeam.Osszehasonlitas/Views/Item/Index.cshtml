@@ -16,32 +16,42 @@
 }
 
 
-<p>
-    Üdvözlünk a modulban!
 
-</p>
-<div>@(ViewBag.hozzaadottTermekID)</div>
 
 <div class="termekOsszehasonlitasRacs">
     <div class="termekOsszehasonlitasOszlop">
-        <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek1Bvin)/small/@(Termek1Kep)" /></div>
-        <div></div>
-        <div>@(Termek1N)</div>
-        <div>@(Termek1P) Ft</div>
-        <div>@(ViewBag.Termek1Meret)</div>
-        <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek1Sku)&AddSkuQty=1">Kosárba</a>
-
+        @if (ViewBag.ElemSzam > 0)
+        {
+            <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek1Bvin)/small/@(Termek1Kep)" /></div>
+            <div class="osszehasTermekCim">@(Termek1N)</div>
+            <div>@(Termek1P) Ft</div>
+            <div>@(ViewBag.Termek1Meret)</div>
+            <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek1Sku)&AddSkuQty=1">Kosárba</a>
+        }
+        else
+        {
+            <div class="osszehasTermekCim">Nincs termék kiválasztva</div>
+            <div>Válaszd ki az összehasonlítandó terméket a lenti gombra kattintva!</div>
+        }
 
     </div>
     <div class="termekOsszehasonlitasOszlop">
-        <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek2Bvin)/small/@(ViewBag.Termek2Kep)" /></div>
-        <div></div>
-        <div>@(ViewBag.Termek2N)</div>
-        <div>@(ViewBag.Termek2P) Ft</div>
-        <div>@(ViewBag.Termek2Meret)</div>
-        <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek2Sku)&AddSkuQty=1">Kosárba</a>
+        @if (ViewBag.ElemSzam > 1)
+        {
+            <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek2Bvin)/small/@(ViewBag.Termek2Kep)" /></div>
+            <div class="osszehasTermekCim">@(ViewBag.Termek2N)</div>
+            <div>@(ViewBag.Termek2P) Ft</div>
+            <div>@(ViewBag.Termek2Meret)</div>
+            <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek2Sku)&AddSkuQty=1">Kosárba</a>
+        } 
+        else
+        {
+            <div class="osszehasTermekCim">Nincs termék kiválasztva</div>
+            <div>Válaszd ki az összehasonlítandó terméket a lenti gombra kattintva!</div>
+        }
+
     </div>
-    
+
 </div>
 
 <div class="ujTermekOGomb">
