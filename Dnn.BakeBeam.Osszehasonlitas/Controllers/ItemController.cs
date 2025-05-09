@@ -23,6 +23,9 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Hotcakes.CommerceDTO.v1.Client;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 
 namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
@@ -88,21 +91,62 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
 
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddItem")]
-        public ActionResult Index()
+        public ActionResult Index(string hozzaadottTermekSKU)
         {
+            string termek1sku = "nmm";
+            string termek2sku = "kmm";
+
             var termekek = "";
 
-            var ctx = DataContext.Instance();
-            var osszehasonlitando = ctx.GetRepository<ProductComparison>()
-                .GetById(1);
+            var userID = 1;
 
-            Console.WriteLine("This is an API Sample Program for Hotcakes");
-            Console.WriteLine();
+            
+
+            var ctx = DataContext.Instance();
+            var adatbazisObjektum = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", User.UserID);
+            ProductComparison osszehasonlitando;
+
+            if (adatbazisObjektum.ToArray().Length != 0)
+            {
+                osszehasonlitando = adatbazisObjektum.First();
+            }
+            else
+            {
+                ProductComparison ujFelhasznalo = new ProductComparison();
+                ujFelhasznalo.CreatedUtc = DateTime.UtcNow;
+                ujFelhasznalo.UserId = User.UserID;
+                ctx.GetRepository<ProductComparison>().Insert(ujFelhasznalo);
+
+                osszehasonlitando = ujFelhasznalo;
+            }
+
+            if (hozzaadottTermekSKU != null){
+                
+
+                ProductComparisonItem ujElem = new ProductComparisonItem();
+                ujElem.AddedUtc = DateTime.UtcNow;
+                ujElem.ProductBvin = hozzaadottTermekSKU;
+                ujElem.ComparisonId = osszehasonlitando.Id;
+
+                ctx.GetRepository<ProductComparisonItem>().Insert(ujElem);
+            }
+
+            
+
+            
+
+
+
+            var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", osszehasonlitando.Id).ToArray();
+
+            //int oesz = osszehasonlitandoElemek.Length;
+            //string oesz = osszehasonlitandoElemek[0];
+            //string termek2sku = osszehasonlitandoElemek[oesz-2].ProductBvin.ToString();
 
             var url = string.Empty;
             var key = string.Empty;
 
-            
+
 
             if (url == string.Empty) url = "http://www.dnndev.me";
             if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
@@ -110,66 +154,69 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             var proxy = new Api(url, key);
 
             var snaps = proxy.CategoriesFindAll();
-            if (snaps.Content != null)
-            {
-                //Console.WriteLine("Found " + snaps.Content.Count + " categories");
-                termekek = "Found " + snaps.Content.Count + " categories";
-               /* Console.WriteLine("-- First 5 --");
-                for (var i = 0; i < 5; i++)
-                {
-                    if (i < snaps.Content.Count)
-                    {
-                        Console.WriteLine(i + ") " + snaps.Content[i].Name + " [" + snaps.Content[i].Bvin + "]");
-                        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
-                        if (cat.Errors.Count > 0)
-                        {
-                            foreach (var err in cat.Errors)
-                            {
-                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("By Bvin: " + cat.Content.Name + " | " + cat.Content.Description);
-                        }
 
-                        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
-                        if (catSlug.Errors.Count > 0)
-                        {
-                            foreach (var err in catSlug.Errors)
-                            {
-                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("By Slug: " + cat.Content.Name + " | " + cat.Content.Description);
-                        }
-                    }
-                }*/
+
+            Array.Sort(osszehasonlitandoElemek, delegate (ProductComparisonItem a, ProductComparisonItem b)
+            {
+                return b.AddedUtc.CompareTo(a.AddedUtc); // csökkenő sorrend
+            });
+
+            // Első két elem kiválasztása
+            var top2 = new List<ProductComparisonItem>();
+            if (osszehasonlitandoElemek.Length > 0)
+                top2.Add(osszehasonlitandoElemek[0]);
+            if (osszehasonlitandoElemek.Length > 1)
+                top2.Add(osszehasonlitandoElemek[1]);
+
+
+            ViewBag.ElemSzam = osszehasonlitandoElemek.Length;
+
+            if (osszehasonlitandoElemek.Length == 0)
+            {
+
+            } else if(osszehasonlitandoElemek.Length > 0)
+            {
+                var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
+                ViewBag.Termekek = termekek;
+                ViewBag.Termek1Sku = termek1.Content.Sku;
+                ViewBag.Termek1Bvin = termek1.Content.Bvin;
+                ViewBag.Termek1N = termek1.Content.ProductName.ToString();
+                ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
+                ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
+                ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
+                ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
             }
 
-            //Console.WriteLine("Done - Press a key to continue");
-            //Console.ReadKey();
-
-
-
-            /*try
+            if(osszehasonlitandoElemek.Length > 1)
             {
-                string HotCakesApiKey = "asfaf";
-                FoglalasokManager foglalasokManager = new FoglalasokManager();
-                var result = foglalasokManager.FoglalasKeszites(SzemelyiEdzoID, Nev, Sport, Idopont, Megjegyzes, HotCakesApiKey);
+                var termek2 = proxy.ProductsFindBySku(top2[1].ProductBvin.ToString());
+
+
+
+                ViewBag.Termek2Bvin = termek2.Content.Bvin;
+                ViewBag.Termek2Sku = termek2.Content.Sku;
+                ViewBag.Termek2N = termek2.Content.ProductName.ToString();
+                ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
+                ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
+                ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
+                ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
+                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x "
+                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
+
+                ViewBag.hozzaadottTermekID = hozzaadottTermekSKU;
             }
-            catch (Exception ex)
-            {
-                return null;
-            }*/
 
-
-
-            var termekek2 = osszehasonlitando.UserId;
-            ViewBag.Termekek = termekek;
             return View();
+        }
+
+
+        public string tizedesJegyLevetel(string nyers)
+        {
+            decimal value = decimal.Parse(nyers);
+            string formatted = value.ToString("0.##");
+            return formatted;
         }
 
 

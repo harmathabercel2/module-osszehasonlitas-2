@@ -1,8 +1,8 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="Dnn.BakeBeam.Osszehasonlitas" type="Module" version="00.00.01">
-      <friendlyName>Dnn.BakeBeam.Osszehasonlitas</friendlyName>
-      <description>Dnn.BakeBeam.Osszehasonlitas</description>
+      <friendlyName>Összehasonlítás modul</friendlyName>
+      <description>Két kiválasztott HotCakes-termék tulajdonságait hasonlítja össze.</description>
       <iconFile>~/Icons/Sigma/Software_32X32_Standard.png</iconFile>
       <owner>
         <name>NiBeSzoCsa</name>

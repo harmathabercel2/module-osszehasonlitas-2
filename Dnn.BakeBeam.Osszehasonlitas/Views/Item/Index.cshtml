@@ -7,12 +7,53 @@
 @{
     //    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/DesktopModules/MVC/RF.Modules.TestFlightAppointment/Scripts/BookingGrid.js");
 
-    var termekek = ViewBag.Termekek;
+    var Termekek = ViewBag.Termekek;
+    var Termek1N = ViewBag.Termek1N;
+    var Termek1P = ViewBag.Termek1P;
+    var Termek1Kep = ViewBag.Termek1Kep;
+
+
 }
 
 
-<p>
-    Üdvözlünk a modulban!
 
-</p>
-<div>@(termekek)</div>
+
+<div class="termekOsszehasonlitasRacs">
+    <div class="termekOsszehasonlitasOszlop">
+        @if (ViewBag.ElemSzam > 0)
+        {
+            <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek1Bvin)/small/@(Termek1Kep)" /></div>
+            <div class="osszehasTermekCim">@(Termek1N)</div>
+            <div>@(Termek1P) Ft</div>
+            <div>@(ViewBag.Termek1Meret)</div>
+            <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek1Sku)&AddSkuQty=1">Kosárba</a>
+        }
+        else
+        {
+            <div class="osszehasTermekCim">Nincs termék kiválasztva</div>
+            <div>Válaszd ki az összehasonlítandó terméket a lenti gombra kattintva!</div>
+        }
+
+    </div>
+    <div class="termekOsszehasonlitasOszlop">
+        @if (ViewBag.ElemSzam > 1)
+        {
+            <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek2Bvin)/small/@(ViewBag.Termek2Kep)" /></div>
+            <div class="osszehasTermekCim">@(ViewBag.Termek2N)</div>
+            <div>@(ViewBag.Termek2P) Ft</div>
+            <div>@(ViewBag.Termek2Meret)</div>
+            <a class="kosarbaGomb" href="/HotcakesStore/Cart?AddSku=@(ViewBag.Termek2Sku)&AddSkuQty=1">Kosárba</a>
+        } 
+        else
+        {
+            <div class="osszehasTermekCim">Nincs termék kiválasztva</div>
+            <div>Válaszd ki az összehasonlítandó terméket a lenti gombra kattintva!</div>
+        }
+
+    </div>
+
+</div>
+
+<div class="ujTermekOGomb">
+    <a class="kosarbaGomb" href="/kategoriak">Új termék kiválasztása</a>
+</div>
