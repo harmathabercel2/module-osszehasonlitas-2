@@ -122,6 +122,7 @@
     <Content Include="Documentation\Documentation.html" />
     <Content Include="License.txt" />
     <Content Include="module.css" />
+    <Content Include="osszehasonlitas.js" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>

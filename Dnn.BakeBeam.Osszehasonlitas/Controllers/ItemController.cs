@@ -151,6 +151,9 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             if (url == string.Empty) url = "http://www.dnndev.me";
             if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
 
+//            if (url == string.Empty) url = "http://rendfejl1013.northeurope.cloudapp.azure.com/";
+//            if (key == string.Empty) key = "1-2ee33390-04c3-4972-96df-d8ff7ef2bc07";
+
             var proxy = new Api(url, key);
 
             var snaps = proxy.CategoriesFindAll();
@@ -177,9 +180,12 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             } else if(osszehasonlitandoElemek.Length > 0)
             {
                 var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
+
+                String termekBvin = termek1.Content.Bvin;
+
                 ViewBag.Termekek = termekek;
                 ViewBag.Termek1Sku = termek1.Content.Sku;
-                ViewBag.Termek1Bvin = termek1.Content.Bvin;
+                ViewBag.Termek1Bvin = termekBvin;
                 ViewBag.Termek1N = termek1.Content.ProductName.ToString();
                 ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
                 ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
@@ -187,6 +193,26 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
                                 + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
                                 + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
+
+                //var tulajd = proxy.ProductPropertiesForProduct(termek1.Content.Sku);
+                //ViewBag.adat = tulajd.Content.Count;
+
+                var tulajd = proxy.ProductPropertiesForProduct(termekBvin);
+
+                ViewBag.adat = tulajd.Content[0].DisplayName;
+
+
+
+                //List<string> Termek1T = new List<string>();
+
+                //var egyediTulajdonsagok = termek1.Content.CustomProperties.ToArray();
+                //for (int i = 0; i < egyediTulajdonsagok.Length; i++)
+                //{
+                //    string aktualis = egyediTulajdonsagok[i].Value;
+                //    Termek1T.Add(aktualis);
+                //}
+
+                //ViewBag.Termek1T = Termek1T;
             }
 
             if(osszehasonlitandoElemek.Length > 1)
