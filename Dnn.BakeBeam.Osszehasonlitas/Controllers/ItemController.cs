@@ -197,9 +197,17 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 //var tulajd = proxy.ProductPropertiesForProduct(termek1.Content.Sku);
                 //ViewBag.adat = tulajd.Content.Count;
 
-                var tulajd = proxy.ProductPropertiesForProduct(termekBvin);
+                var tulajd = proxy.ProductPropertiesForProduct(termekBvin).Content.ToArray();
 
-                ViewBag.adat = tulajd.Content[0].DisplayName;
+                List<string> egyediTulajdonsagok = new List<string>();
+
+                for (int i = 0; i < tulajd.Length; i++)
+                {
+                    ProductPropertyValue ertek = ctx.GetRepository<ProductPropertyValue>().Find("where ProductBvin = @0 and PropertyId = @1", termekBvin, tulajd[i].Id).First();
+                    egyediTulajdonsagok.Add(tulajd[i].DisplayName + ": " + ertek.PropertyValue);
+                }
+
+                ViewBag.egyediTulajdonsagok = egyediTulajdonsagok;
 
 
 

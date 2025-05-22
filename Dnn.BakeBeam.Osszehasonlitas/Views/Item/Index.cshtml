@@ -26,7 +26,12 @@
             <div class="osszehasTermekCim">@(Termek1N)</div>
             <div>@(Termek1P) Ft</div>
             <div>@(ViewBag.Termek1Meret)</div>
-            <div>@(ViewBag.adat)</div>
+
+            foreach (var item in ViewBag.egyediTulajdonsagok)
+            {
+                <div>@item</div>
+            }
+
             //<div>@(ViewBag.Termek1T.Count)</div>
             <a class="kosarbaGomb" href="/kosar?AddSku=@(ViewBag.Termek1Sku)&AddSkuQty=1">Kosárba</a>
         }

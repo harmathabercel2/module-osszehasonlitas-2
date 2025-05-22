@@ -114,6 +114,7 @@
     <Compile Include="Models\ProductComparison.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Models\ProductPropertyValue.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
