@@ -174,6 +174,46 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
             ViewBag.ElemSzam = osszehasonlitandoElemek.Length;
 
+            List<TermekAdat> termekTulajdonsagok = new List<TermekAdat>();
+            for(int a = 0; a < 5 ; a++)
+            {
+                var termek = proxy.ProductsFindBySku(osszehasonlitandoElemek[a].ProductBvin.ToString());
+
+                String termekBvin = termek.Content.Bvin;
+
+                TermekAdat adatTarto = new TermekAdat();
+
+                adatTarto.Termek1Sku = termek.Content.Sku;
+                adatTarto.Termek1Bvin = termekBvin;
+                adatTarto.Termek1N = termek.Content.ProductName.ToString();
+                adatTarto.Termek1P = tizedesJegyLevetel(termek.Content.SitePrice.ToString());
+                adatTarto.Termek1W = tizedesJegyLevetel(termek.Content.ShippingDetails.Weight.ToString());
+                adatTarto.Termek1Kep = termek.Content.ImageFileMedium.ToString();
+                adatTarto.Termek1Meret = tizedesJegyLevetel(termek.Content.ShippingDetails.Length.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek.Content.ShippingDetails.Width.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek.Content.ShippingDetails.Height.ToString()) + " cm";
+
+                //var tulajd = proxy.ProductPropertiesForProduct(termek1.Content.Sku);
+                //ViewBag.adat = tulajd.Content.Count;
+
+                var tulajd = proxy.ProductPropertiesForProduct(termekBvin).Content.ToArray();
+
+                List<string> egyediTulajdonsagok = new List<string>();
+
+                for (int i = 0; i < tulajd.Length; i++)
+                {
+                    ProductPropertyValue ertek = ctx.GetRepository<ProductPropertyValue>().Find("where ProductBvin = @0 and PropertyId = @1", termekBvin, tulajd[i].Id).First();
+                    egyediTulajdonsagok.Add(tulajd[i].DisplayName + ": " + ertek.PropertyValue);
+                }
+
+                adatTarto.egyediTulajdonsagok = egyediTulajdonsagok;
+
+                termekTulajdonsagok.Add(adatTarto);
+            }
+
+            ViewBag.termekTulajdonsagok = termekTulajdonsagok;
+
+
             if (osszehasonlitandoElemek.Length == 0)
             {
 

@@ -16,48 +16,29 @@
 }
 
 
-
-
 <div class="termekOsszehasonlitasRacs">
-    <div class="termekOsszehasonlitasOszlop">
-        @if (ViewBag.ElemSzam > 0)
+    @if (ViewBag.ElemSzam > 0)
+    {
+        foreach (var termek in ViewBag.termekTulajdonsagok)
         {
-            <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek1Bvin)/small/@(Termek1Kep)" /></div>
-            <div class="osszehasTermekCim">@(Termek1N)</div>
-            <div>@(Termek1P) Ft</div>
-            <div>@(ViewBag.Termek1Meret)</div>
+            <div class="termekOsszehasonlitasOszlop">
 
-            foreach (var item in ViewBag.egyediTulajdonsagok)
-            {
-                <div>@item</div>
-            }
+                <div><img src="/Portals/0/Hotcakes/Data/products/@(termek.Termek1Bvin)/small/@(termek.Termek1Kep)" /></div>
+                <div class="osszehasTermekCim">@(termek.Termek1N)</div>
+                <div>@(termek.Termek1P) Ft</div>
+                <div>@(termek.Termek1Meret)</div>
 
-            //<div>@(ViewBag.Termek1T.Count)</div>
-            <a class="kosarbaGomb" href="/kosar?AddSku=@(ViewBag.Termek1Sku)&AddSkuQty=1">Kosárba</a>
-        }
-        else
-        {
-            <div class="osszehasTermekCim">Nincs termék kiválasztva</div>
-            <div>Válaszd ki az összehasonlítandó terméket a lenti gombra kattintva!</div>
-        }
+                @foreach (var tulajd in termek.egyediTulajdonsagok)
+                {
+                    <div>@tulajd</div>
+                }
 
-    </div>
-    <div class="termekOsszehasonlitasOszlop">
-        @if (ViewBag.ElemSzam > 1)
-        {
-            <div><img src="/Portals/0/Hotcakes/Data/products/@(ViewBag.Termek2Bvin)/small/@(ViewBag.Termek2Kep)" /></div>
-            <div class="osszehasTermekCim">@(ViewBag.Termek2N)</div>
-            <div>@(ViewBag.Termek2P) Ft</div>
-            <div>@(ViewBag.Termek2Meret)</div>
-            <a class="kosarbaGomb" href="/kosar?AddSku=@(ViewBag.Termek2Sku)&AddSkuQty=1">Kosárba</a>
-        }
-        else
-        {
-            <div class="osszehasTermekCim">Nincs termék kiválasztva</div>
-            <div>Válaszd ki az összehasonlítandó terméket a lenti gombra kattintva!</div>
+                <a class="kosarbaGomb" href="/kosar?AddSku=@(termek.Termek1Sku)&AddSkuQty=1">Kosárba</a>
+
+            </div>
         }
 
-    </div>
+    }
 
 </div>
 

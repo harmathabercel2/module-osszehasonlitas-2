@@ -116,6 +116,7 @@
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Models\ProductPropertyValue.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\TermekAdat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
