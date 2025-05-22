@@ -196,91 +196,24 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 //var tulajd = proxy.ProductPropertiesForProduct(termek1.Content.Sku);
                 //ViewBag.adat = tulajd.Content.Count;
 
-                var tulajd = proxy.ProductPropertiesForProduct(termekBvin).Content.ToArray();
-
                 List<string> egyediTulajdonsagok = new List<string>();
-
-                for (int i = 0; i < tulajd.Length; i++)
+                try
                 {
-                    ProductPropertyValue ertek = ctx.GetRepository<ProductPropertyValue>().Find("where ProductBvin = @0 and PropertyId = @1", termekBvin, tulajd[i].Id).First();
-                    egyediTulajdonsagok.Add(tulajd[i].DisplayName + ": " + ertek.PropertyValue);
-                }
+                    var tulajd = proxy.ProductPropertiesForProduct(termekBvin).Content.ToArray();
 
+                    for (int i = 0; i < tulajd.Length; i++)
+                    {
+                        ProductPropertyValue ertek = ctx.GetRepository<ProductPropertyValue>().Find("where ProductBvin = @0 and PropertyId = @1", termekBvin, tulajd[i].Id).First();
+                        egyediTulajdonsagok.Add(tulajd[i].DisplayName + ": " + ertek.PropertyValue);
+                    }
+                } catch(Exception ex) { }
+               
                 adatTarto.egyediTulajdonsagok = egyediTulajdonsagok;
 
                 termekTulajdonsagok.Add(adatTarto);
             }
 
             ViewBag.termekTulajdonsagok = termekTulajdonsagok;
-
-
-            if (osszehasonlitandoElemek.Length == 0)
-            {
-
-            } else if(osszehasonlitandoElemek.Length > 0)
-            {
-                var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
-
-                String termekBvin = termek1.Content.Bvin;
-
-                ViewBag.Termekek = termekek;
-                ViewBag.Termek1Sku = termek1.Content.Sku;
-                ViewBag.Termek1Bvin = termekBvin;
-                ViewBag.Termek1N = termek1.Content.ProductName.ToString();
-                ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
-                ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
-                ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
-                ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
-                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
-                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
-
-                //var tulajd = proxy.ProductPropertiesForProduct(termek1.Content.Sku);
-                //ViewBag.adat = tulajd.Content.Count;
-
-                var tulajd = proxy.ProductPropertiesForProduct(termekBvin).Content.ToArray();
-
-                List<string> egyediTulajdonsagok = new List<string>();
-
-                for (int i = 0; i < tulajd.Length; i++)
-                {
-                    ProductPropertyValue ertek = ctx.GetRepository<ProductPropertyValue>().Find("where ProductBvin = @0 and PropertyId = @1", termekBvin, tulajd[i].Id).First();
-                    egyediTulajdonsagok.Add(tulajd[i].DisplayName + ": " + ertek.PropertyValue);
-                }
-
-                ViewBag.egyediTulajdonsagok = egyediTulajdonsagok;
-
-
-
-                //List<string> Termek1T = new List<string>();
-
-                //var egyediTulajdonsagok = termek1.Content.CustomProperties.ToArray();
-                //for (int i = 0; i < egyediTulajdonsagok.Length; i++)
-                //{
-                //    string aktualis = egyediTulajdonsagok[i].Value;
-                //    Termek1T.Add(aktualis);
-                //}
-
-                //ViewBag.Termek1T = Termek1T;
-            }
-
-            if(osszehasonlitandoElemek.Length > 1)
-            {
-                var termek2 = proxy.ProductsFindBySku(top2[1].ProductBvin.ToString());
-
-
-
-                ViewBag.Termek2Bvin = termek2.Content.Bvin;
-                ViewBag.Termek2Sku = termek2.Content.Sku;
-                ViewBag.Termek2N = termek2.Content.ProductName.ToString();
-                ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
-                ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
-                ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
-                ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
-                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x "
-                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
-
-                ViewBag.hozzaadottTermekID = hozzaadottTermekSKU;
-            }
 
             return View();
         }
