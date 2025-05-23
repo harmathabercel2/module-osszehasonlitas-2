@@ -5,6 +5,7 @@
     text-align: center;
     padding: 10px;
     border-right: 5px solid black;
+    flex:1
 }
     .termekOsszehasonlitasOszlop:last-child {
         border-right: none;
@@ -28,4 +29,7 @@
 .osszehasTermekCim{
     margin-top: 10px;
     font-weight: bold;
+}
+.nincsKivTermek{
+    margin: auto;
 }

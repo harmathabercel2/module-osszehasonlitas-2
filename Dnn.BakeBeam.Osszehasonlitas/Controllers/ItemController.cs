@@ -132,11 +132,11 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
 
 
 
-            if (url == string.Empty) url = "http://www.dnndev.me";
-            if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
+//            if (url == string.Empty) url = "http://www.dnndev.me";
+//            if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
 
-//            if (url == string.Empty) url = "http://rendfejl1013.northeurope.cloudapp.azure.com/";
-//            if (key == string.Empty) key = "1-2ee33390-04c3-4972-96df-d8ff7ef2bc07";
+            if (url == string.Empty) url = "http://rendfejl1013.northeurope.cloudapp.azure.com/";
+            if (key == string.Empty) key = "1-2ee33390-04c3-4972-96df-d8ff7ef2bc07";
 
             var proxy = new Api(url, key);
 
@@ -153,7 +153,15 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             ViewBag.ElemSzam = osszehasonlitandoElemek.Length;
 
             List<TermekAdat> termekTulajdonsagok = new List<TermekAdat>();
-            for(int a = 0; a < 5 ; a++)
+
+            int osszehasonlitandokSzama = 5;
+
+            if(osszehasonlitandoElemek.Length < 5)
+            {
+                osszehasonlitandokSzama = osszehasonlitandoElemek.Length;
+            }
+
+            for(int a = 0; a < osszehasonlitandokSzama; a++)
             {
                 var termek = proxy.ProductsFindBySku(osszehasonlitandoElemek[a].ProductBvin.ToString());
 
