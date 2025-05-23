@@ -1,13 +1,15 @@
 .termekOsszehasonlitasRacs {
-    display: grid;
-    grid-template-columns: 50% 50%;
+    display: flex;
 }
-.termekOsszehasonlitasOszlop{
+.termekOsszehasonlitasOszlop {
     text-align: center;
-}
-.termekOsszehasonlitasOszlop:first-child{
+    padding: 10px;
     border-right: 5px solid black;
+    flex:1
 }
+    .termekOsszehasonlitasOszlop:last-child {
+        border-right: none;
+    }
 .kosarbaGomb {
     
     display: inline-block;
@@ -27,4 +29,7 @@
 .osszehasTermekCim{
     margin-top: 10px;
     font-weight: bold;
+}
+.nincsKivTermek{
+    margin: auto;
 }

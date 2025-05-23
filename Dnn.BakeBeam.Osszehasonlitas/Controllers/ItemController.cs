@@ -93,14 +93,6 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddItem")]
         public ActionResult Index(string hozzaadottTermekSKU)
         {
-            string termek1sku = "nmm";
-            string termek2sku = "kmm";
-
-            var termekek = "";
-
-            var userID = 1;
-
-            
 
             var ctx = DataContext.Instance();
             var adatbazisObjektum = ctx.GetRepository<ProductComparison>().Find("where UserId = @0", User.UserID);
@@ -131,25 +123,20 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 ctx.GetRepository<ProductComparisonItem>().Insert(ujElem);
             }
 
-            
-
-            
-
-
 
             var osszehasonlitandoElemek = ctx.GetRepository<ProductComparisonItem>().Find("where ComparisonId = @0", osszehasonlitando.Id).ToArray();
 
-            //int oesz = osszehasonlitandoElemek.Length;
-            //string oesz = osszehasonlitandoElemek[0];
-            //string termek2sku = osszehasonlitandoElemek[oesz-2].ProductBvin.ToString();
 
             var url = string.Empty;
             var key = string.Empty;
 
 
 
-            if (url == string.Empty) url = "http://www.dnndev.me";
-            if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
+//            if (url == string.Empty) url = "http://www.dnndev.me";
+//            if (key == string.Empty) key = "1-b8bbb6d3-05f5-49eb-a95f-e81798ee9b24";
+
+            if (url == string.Empty) url = "http://rendfejl1013.northeurope.cloudapp.azure.com/";
+            if (key == string.Empty) key = "1-2ee33390-04c3-4972-96df-d8ff7ef2bc07";
 
             var proxy = new Api(url, key);
 
@@ -161,52 +148,56 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
                 return b.AddedUtc.CompareTo(a.AddedUtc); // csökkenő sorrend
             });
 
-            // Első két elem kiválasztása
-            var top2 = new List<ProductComparisonItem>();
-            if (osszehasonlitandoElemek.Length > 0)
-                top2.Add(osszehasonlitandoElemek[0]);
-            if (osszehasonlitandoElemek.Length > 1)
-                top2.Add(osszehasonlitandoElemek[1]);
 
 
             ViewBag.ElemSzam = osszehasonlitandoElemek.Length;
 
-            if (osszehasonlitandoElemek.Length == 0)
-            {
+            List<TermekAdat> termekTulajdonsagok = new List<TermekAdat>();
 
-            } else if(osszehasonlitandoElemek.Length > 0)
+            int osszehasonlitandokSzama = 5;
+
+            if(osszehasonlitandoElemek.Length < 5)
             {
-                var termek1 = proxy.ProductsFindBySku(top2[0].ProductBvin.ToString());
-                ViewBag.Termekek = termekek;
-                ViewBag.Termek1Sku = termek1.Content.Sku;
-                ViewBag.Termek1Bvin = termek1.Content.Bvin;
-                ViewBag.Termek1N = termek1.Content.ProductName.ToString();
-                ViewBag.Termek1P = tizedesJegyLevetel(termek1.Content.SitePrice.ToString());
-                ViewBag.Termek1W = tizedesJegyLevetel(termek1.Content.ShippingDetails.Weight.ToString());
-                ViewBag.Termek1Kep = termek1.Content.ImageFileMedium.ToString();
-                ViewBag.Termek1Meret = tizedesJegyLevetel(termek1.Content.ShippingDetails.Length.ToString()) + " cm x "
-                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Width.ToString()) + " cm x "
-                                + tizedesJegyLevetel(termek1.Content.ShippingDetails.Height.ToString()) + " cm";
+                osszehasonlitandokSzama = osszehasonlitandoElemek.Length;
             }
 
-            if(osszehasonlitandoElemek.Length > 1)
+            for(int a = 0; a < osszehasonlitandokSzama; a++)
             {
-                var termek2 = proxy.ProductsFindBySku(top2[1].ProductBvin.ToString());
+                var termek = proxy.ProductsFindBySku(osszehasonlitandoElemek[a].ProductBvin.ToString());
+
+                String termekBvin = termek.Content.Bvin;
+
+                TermekAdat adatTarto = new TermekAdat();
+
+                adatTarto.Termek1Sku = termek.Content.Sku;
+                adatTarto.Termek1Bvin = termekBvin;
+                adatTarto.Termek1N = termek.Content.ProductName.ToString();
+                adatTarto.Termek1P = tizedesJegyLevetel(termek.Content.SitePrice.ToString());
+                adatTarto.Termek1W = tizedesJegyLevetel(termek.Content.ShippingDetails.Weight.ToString());
+                adatTarto.Termek1Kep = termek.Content.ImageFileMedium.ToString();
+                adatTarto.Termek1Meret = tizedesJegyLevetel(termek.Content.ShippingDetails.Length.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek.Content.ShippingDetails.Width.ToString()) + " cm x "
+                                + tizedesJegyLevetel(termek.Content.ShippingDetails.Height.ToString()) + " cm";
 
 
+                List<string> egyediTulajdonsagok = new List<string>();
+                try
+                {
+                    var tulajd = proxy.ProductPropertiesForProduct(termekBvin).Content.ToArray();
 
-                ViewBag.Termek2Bvin = termek2.Content.Bvin;
-                ViewBag.Termek2Sku = termek2.Content.Sku;
-                ViewBag.Termek2N = termek2.Content.ProductName.ToString();
-                ViewBag.Termek2P = tizedesJegyLevetel(termek2.Content.SitePrice.ToString());
-                ViewBag.Termek2W = tizedesJegyLevetel(termek2.Content.ShippingDetails.Weight.ToString());
-                ViewBag.Termek2Kep = termek2.Content.ImageFileMedium.ToString();
-                ViewBag.Termek2Meret = tizedesJegyLevetel(termek2.Content.ShippingDetails.Length.ToString()) + " cm x "
-                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Width.ToString()) + " cm x "
-                    + tizedesJegyLevetel(termek2.Content.ShippingDetails.Height.ToString()) + " cm";
+                    for (int i = 0; i < tulajd.Length; i++)
+                    {
+                        ProductPropertyValue ertek = ctx.GetRepository<ProductPropertyValue>().Find("where ProductBvin = @0 and PropertyId = @1", termekBvin, tulajd[i].Id).First();
+                        egyediTulajdonsagok.Add(tulajd[i].DisplayName + ": " + ertek.PropertyValue);
+                    }
+                } catch(Exception ex) { }
+               
+                adatTarto.egyediTulajdonsagok = egyediTulajdonsagok;
 
-                ViewBag.hozzaadottTermekID = hozzaadottTermekSKU;
+                termekTulajdonsagok.Add(adatTarto);
             }
+
+            ViewBag.termekTulajdonsagok = termekTulajdonsagok;
 
             return View();
         }
@@ -219,104 +210,5 @@ namespace Dnn.BakeBeam.Dnn.BakeBeam.Osszehasonlitas.Controllers
             return formatted;
         }
 
-
-        /*private void UserControlKeszlet_Load(object sender, EventArgs e)
-        {
-            Api proxy = apiHivas();
-
-            //termékek betöltése datagridviewba
-            var response_product = proxy.ProductsFindAll();
-            var beszallitok = proxy.ManufacturerFindAll();
-
-            if (response_product == null || response_product.Content == null || response_product.Content.Count == 0)
-            {
-                MessageBox.Show("Nem sikerült lekérni a termékeket vagy nincs adat.");
-                return;
-            }
-            else
-            {
-
-                for (int i = 0; i < response_product.Content.Count; i++)
-                {
-                    Termek termek = new Termek();
-                    termek.Név = response_product.Content[i].ProductName;
-                    termek.BeszerzésiÁr = response_product.Content[i].SiteCost;
-
-                    var keszlet = proxy.ProductInventoryFindForProduct(response_product.Content[i].Bvin);
-                    termek.Raktáron = keszlet.Content[0].QuantityOnHand;
-                    termek.MinimálisMennyiség = keszlet.Content[0].LowStockPoint;
-
-
-                    if (keszlet.Content[0].LowStockPoint == 1)
-                    {
-                        termek.OptimálisMennyiség = 3;
-                    }
-                    else if (keszlet.Content[0].LowStockPoint == 5)
-                    {
-                        termek.OptimálisMennyiség = 10;
-                    }
-                    else if (keszlet.Content[0].LowStockPoint == 15)
-                    {
-                        termek.OptimálisMennyiség = 30;
-                    }
-                    else if (keszlet.Content[0].LowStockPoint == 50)
-                    {
-                        termek.OptimálisMennyiség = 100;
-                    }
-                    else
-                    {
-                        termek.OptimálisMennyiség = 300;
-                    }
-
-
-                    if (termek.OptimálisMennyiség > termek.Raktáron)
-                    {
-                        termek.OptimálishozSzükségesFt = (termek.OptimálisMennyiség - termek.Raktáron) * termek.BeszerzésiÁr;
-                        termek.OptimálishozSzükségesDb = termek.OptimálisMennyiség - termek.Raktáron;
-                    }
-                    else
-                    {
-                        termek.OptimálishozSzükségesFt = 0;
-                        termek.OptimálishozSzükségesDb = 0;
-                    }
-
-                    if (response_product.Content[i].ManufacturerId == "d579958c-9637-4680-958a-171f5ef37452")
-                    {
-                        termek.Beszállító = "BakeBeam Grillsütőgyártó kft.";
-                    }
-                    else if (response_product.Content[i].ManufacturerId == "067ff943-bb21-4f5f-bfec-1b66124df77e")
-                    {
-                        termek.Beszállító = "BakeBeam Mikrógyártó kft.";
-                    }
-                    else if (response_product.Content[i].ManufacturerId == "8e3d70b5-8050-4958-81aa-1f2f417d630e")
-                    {
-                        termek.Beszállító = "BakeBeam Kellékgyártó kft.";
-                    }
-                    else if (response_product.Content[i].ManufacturerId == "25afa805-3277-4272-8bfc-c5531289239b")
-                    {
-                        termek.Beszállító = "BakeBeam Airfryergyártó kft.";
-                    }
-                    else
-                    {
-                        termek.Beszállító = "BakeBeam Sütőgyártó kft.";
-                    }
-
-                    termekek.Add(termek);
-
-                }
-
-                dataGridView1.DataSource = termekek;
-
-                //beszállítók betöltése listboxba
-
-
-                for (int i = 0; i < beszallitok.Content.Count; i++)
-                {
-                    listBoxBeszallitok.Items.Add(beszallitok.Content[i].DisplayName);
-
-                }
-
-            }
-        }*/
     }
 }
